@@ -9,21 +9,21 @@ class InterferenceConfig
      *
      * @var int
      */
-    protected $interferenceMin = 100;
+    protected $interferenceMin = 10;
 
     /**
      * maximum number of char for interference
      *
      * @var int
      */
-    protected $interferenceMax = 150;
+    protected $interferenceMax = 30;
 
     /**
-     * symbols used to draw interference
+     * symbols used to draw interference (.-_=|~/)
      *
      * @var string
      */
-    protected $interferenceSymbols = '.-_=|*~/';
+    protected $interferenceSymbols = '.';
 
     /**
      * interference color array [R, G, B]

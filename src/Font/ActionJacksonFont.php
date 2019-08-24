@@ -9,6 +9,6 @@ class ActionJacksonFont extends ModelFont
         $this
             ->setFontPath(__DIR__ . '/../../fonts/actionJackson.ttf')
             ->setCharWidth(25)
-            ->setCharHeight(35);
+            ->setCharHeight(20);
     }
 }

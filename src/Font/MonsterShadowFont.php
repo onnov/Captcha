@@ -8,7 +8,7 @@ class MonsterShadowFont extends ModelFont
     {
         $this
             ->setFontPath(__DIR__ . '/../../fonts/monsterShadow.ttf')
-            ->setCharWidth(20)
-            ->setCharHeight(35);
+            ->setCharWidth(22)
+            ->setCharHeight(20);
     }
 }

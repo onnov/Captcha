@@ -8,7 +8,7 @@ class Baveuse3dFont extends ModelFont
     {
         $this
             ->setFontPath(__DIR__ . '/../../fonts/baveuse3d.ttf')
-            ->setCharWidth(25)
-            ->setCharHeight(40);
+            ->setCharWidth(27)
+            ->setCharHeight(25);
     }
 }

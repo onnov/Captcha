@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace Onnov\Captcha;
 
@@ -18,37 +17,37 @@ use Onnov\Captcha\Font\MonsterShadowFont;
  */
 class Captcha
 {
-    /** @var CaptchaConfig */
-    protected $config;
+    /** @var CaptchaConfig|null */
+    protected $config = null;
 
     /** @var string */
     protected $keystring;
 
-    /**
-     * Captcha constructor.
-     * @param CaptchaConfig|null $config
-     */
-    public function __construct(CaptchaConfig $config = null)
+    protected function fixConfig()
     {
-        $this->config = is_null($config) ? new CaptchaConfig() : $config;
-
-        if (is_null($this->config->getFonts())) {
-            $this->config->setFonts(
-                [
-                    new ActionJacksonFont(),
-                    new MonsterShadowFont(),
-                    new Baveuse3dFont(),
-                ]
-            );
+        $fonts = $this->getConfig()->getFonts();
+        if (is_array($fonts) === false || count($fonts) === 0) {
+            $this
+                ->getConfig()
+                ->setFonts(
+                    [
+                        new ActionJacksonFont(),
+                        //new MonsterShadowFont(),
+                        //new Baveuse3dFont(),
+                    ]
+                );
         }
 
-        if (is_null($this->config->getEffects())) {
-            $this->config->setEffects(
-                [
-                    new InterferenceEffect(),
-                    new WaveDistortionEffect(),
-                ]
-            );
+        $effects = $this->getConfig()->getEffects();
+        if (is_array($effects) === false) {
+            $this
+                ->getConfig()
+                ->setEffects(
+                    [
+                        new InterferenceEffect(),
+                        new WaveDistortionEffect(),
+                    ]
+                );
         }
     }
 
@@ -59,7 +58,12 @@ class Captcha
      */
     public function getCaptcha()
     {
+        if ($this->getConfig() == null) {
+            $this->setConfig(new CaptchaConfig());
+        }
+        $this->fixConfig();
         $conf = $this->getConfig();
+
         $img = $this->getImg();
 
         $imgType = '';
@@ -90,7 +94,7 @@ class Captcha
     }
 
     /**
-     * @return resource
+     * @return bool|false|resource
      */
     private function getImg()
     {
@@ -109,7 +113,7 @@ class Captcha
     }
 
     /**
-     * @return resource
+     * @return false|resource
      */
     private function getImgF()
     {
@@ -193,16 +197,19 @@ class Captcha
     /**
      * @return CaptchaConfig
      */
-    public function getConfig(): CaptchaConfig
+    private function getConfig()
     {
         return $this->config;
     }
 
     /**
      * @param CaptchaConfig $config
+     * @return $this
      */
-    public function setConfig(CaptchaConfig $config): void
+    public function setConfig($config)
     {
         $this->config = $config;
+
+        return $this;
     }
 }

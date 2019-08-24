@@ -32,7 +32,7 @@ class InterferenceEffect implements EffectInterface
             $y = rand(0, $height);
             $f = rand(0, 5);
 
-            $c = ImageColorAllocate($img, $color[0], $color[1], $color[2]);
+            $c = imagecolorallocate($img, $color[0], $color[1], $color[2]);
             imagechar($img, $f, $x, $y, $charArr[array_rand($charArr)], $c);
         }
     }

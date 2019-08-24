@@ -26,7 +26,7 @@ class ModelFont
     }
 
     /**
-     * @param $fontPath
+     * @param string $fontPath
      * @return $this
      */
     public function setFontPath($fontPath)
@@ -45,7 +45,7 @@ class ModelFont
     }
 
     /**
-     * @param $charWidth
+     * @param int $charWidth
      * @return $this
      */
     public function setCharWidth($charWidth)
@@ -64,7 +64,7 @@ class ModelFont
     }
 
     /**
-     * @param $charHeight
+     * @param int $charHeight
      * @return $this
      */
     public function setCharHeight($charHeight)
