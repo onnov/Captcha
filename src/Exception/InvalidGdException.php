@@ -1,6 +1,6 @@
 <?php
 
-namespace Onnov\Exception;
+namespace Onnov\Captcha\Exception;
 
 /**
  * Class InvalidRequestException

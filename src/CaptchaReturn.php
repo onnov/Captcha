@@ -1,16 +1,56 @@
 <?php
+
+namespace Onnov\Captcha;
+
 /**
- * Created by PhpStorm.
- * Project: mail
- * User: sv
- * Date: 23.08.2019
- * Time: 21:38
+ * Class CaptchaReturn
+ * @package Onnov\Captcha
  */
-
-namespace Onnov;
-
-
 class CaptchaReturn
 {
+    /** @var array */
+    protected $headers = [];
+    
+    /** @var string */
+    protected $img;
+    
+    /** @var string */
+    protected $keyString;
 
+    /**
+     * CaptchaReturn constructor.
+     * @param array $headers
+     * @param string $img
+     * @param string $keyString
+     */
+    public function __construct($headers, $img, $keyString)
+    {
+        $this->headers = $headers;
+        $this->img = $img;
+        $this->keyString = $keyString;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImg()
+    {
+        return $this->img;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKeyString()
+    {
+        return $this->keyString;
+    }
 }
