@@ -11,6 +11,15 @@ use Onnov\Captcha\CaptchaConfig;
  */
 class WaveDistortionEffect implements EffectInterface
 {
+    /** @var WaveDistortionConfig */
+    protected $waveDistortionConfig;
+
+    public function __construct(WaveDistortionConfig $waveDistortionConfig = null)
+    {
+        $this->waveDistortionConfig = is_null($waveDistortionConfig) ? new WaveDistortionConfig(
+        ) : $waveDistortionConfig;
+    }
+
     /**
      * @param CaptchaConfig $config
      * @param resource $img
@@ -21,7 +30,7 @@ class WaveDistortionEffect implements EffectInterface
         $height = $config->getHeight();
         $foregroundColor = $config->getForegroundColor();
         $backgroundColor = $config->getBackgroundColor();
-
+//print_r($backgroundColor);die;
         $center = $width / 2;
 
         $imgRes = $this->imageCreate($width, $height);
@@ -31,7 +40,13 @@ class WaveDistortionEffect implements EffectInterface
             $backgroundColor[1],
             $backgroundColor[2]
         );
+
+//        var_dump($imgRes);die;
+
+
         imagefilledrectangle($imgRes, 0, 0, $width - 1, $height - 1, $bg);
+
+//        $img = $imgRes;die;
 
         $foreground = imagecolorallocate(
             $img,
@@ -48,83 +63,69 @@ class WaveDistortionEffect implements EffectInterface
             $foreground
         );
 
-        // periods
-        $rand1 = mt_rand(75, 120) / 1000;
-        $rand2 = mt_rand(75, 120) / 1000;
-        $rand3 = mt_rand(75, 120) / 1000;
-        $rand4 = mt_rand(75, 120) / 1000;
+        // случайные параметры (можно поэкспериментировать с коэффициентами):
+        // frequency
+        $rand1 = mt_rand(700000, 1000000) / 15000000;
+        $rand2 = mt_rand(700000, 1000000) / 15000000;
+        $rand3 = mt_rand(700000, 1000000) / 15000000;
+        $rand4 = mt_rand(700000, 1000000) / 15000000;
         // phases
-        $rand5 = mt_rand(0, 31415926) / 10000000;
-        $rand6 = mt_rand(0, 31415926) / 10000000;
-        $rand7 = mt_rand(0, 31415926) / 10000000;
-        $rand8 = mt_rand(0, 31415926) / 10000000;
+        $rand5 = mt_rand(0, 3141592) / 1000000;
+        $rand6 = mt_rand(0, 3141592) / 1000000;
+        $rand7 = mt_rand(0, 3141592) / 1000000;
+        $rand8 = mt_rand(0, 3141592) / 1000000;
         // amplitudes
-        $rand9 = mt_rand(220, 330) / 110;
-        $rand10 = mt_rand(220, 330) / 110;
-        //wave distortion
+
+        $conf = $this->getWaveDistortionConfig();
+        $rand9 = mt_rand($conf->getAmplitudeStart(), $conf->getAmplitudeEnd()) / $conf->getAmplitudeDivider();
+        $rand10 = mt_rand($conf->getAmplitudeStart(), $conf->getAmplitudeEnd()) / $conf->getAmplitudeDivider();
+
         for ($x = 0; $x < $width; $x++) {
             for ($y = 0; $y < $height; $y++) {
-                $sx = (int)round(
-                    $x + (sin($x * $rand1 + $rand5)
-                        + sin($y * $rand3 + $rand6)) * $rand9 - $width / 2 + $center + 1,
-                    0
-                );
-                $sy = (int)round(
-                    $y + (sin($x * $rand2 + $rand7) + sin($y * $rand4 + $rand8)) * $rand10,
-                    0
-                );
+                $sx = $x + (sin($x * $rand1 + $rand5) + sin($y * $rand3 + $rand6)) * $rand9 - $width / 2 + $center + 1;
+                $sy = $y + (sin($x * $rand2 + $rand7) + sin($y * $rand4 + $rand8)) * $rand10;
 
                 if ($sx < 0 || $sy < 0 || $sx >= $width - 1 || $sy >= $height - 1) {
                     continue;
+                } else {
+                    $color = imagecolorat($img, $sx, $sy) & 0xFF;
+                    $color_x = imagecolorat($img, $sx + 1, $sy) & 0xFF;
+                    $color_y = imagecolorat($img, $sx, $sy + 1) & 0xFF;
+                    $color_xy = imagecolorat($img, $sx + 1, $sy + 1) & 0xFF;
                 }
-
-                $color = imagecolorat($img, $sx, $sy) & 0xFF;
-                $color_x = imagecolorat($img, $sx + 1, $sy) & 0xFF;
-                $color_y = imagecolorat($img, $sx, $sy + 1) & 0xFF;
-                $color_xy = imagecolorat($img, $sx + 1, $sy + 1) & 0xFF;
 
                 if ($color == 255 && $color_x == 255 && $color_y == 255 && $color_xy == 255) {
                     continue;
-                }
+                } else {
+                    if ($color == 0 && $color_x == 0 && $color_y == 0 && $color_xy == 0) {
+                        $newred = $foregroundColor[0];
+                        $newgreen = $foregroundColor[1];
+                        $newblue = $foregroundColor[2];
+                    } else {
+                        $frsx = $sx - floor($sx);
+                        $frsy = $sy - floor($sy);
+                        $frsx1 = 1 - $frsx;
+                        $frsy1 = 1 - $frsy;
 
-                $newred = $foregroundColor[0];
-                $newgreen = $foregroundColor[1];
-                $newblue = $foregroundColor[2];
+                        $newcolor = (
+                            $color * $frsx1 * $frsy1 +
+                            $color_x * $frsx * $frsy1 +
+                            $color_y * $frsx1 * $frsy +
+                            $color_xy * $frsx * $frsy);
 
-                if ($color !== 0 && $color_x !== 0 && $color_y !== 0 && $color_xy !== 0) {
-                    $frsx = $sx - floor($sx);
-                    $frsy = $sy - floor($sy);
-                    $frsx1 = 1 - $frsx;
-                    $frsy1 = 1 - $frsy;
+                        if ($newcolor > 255) {
+                            $newcolor = 255;
+                        }
+                        $newcolor = $newcolor / 255;
+                        $newcolor0 = 1 - $newcolor;
 
-                    $newcolor = (
-                        $color * $frsx1 * $frsy1 +
-                        $color_x * $frsx * $frsy1 +
-                        $color_y * $frsx1 * $frsy +
-                        $color_xy * $frsx * $frsy);
-
-                    if ($newcolor > 255) {
-                        $newcolor = 255;
+                        $newred = $newcolor0 * $foregroundColor[0] + $newcolor * $backgroundColor[0];
+                        $newgreen = $newcolor0 * $foregroundColor[1] + $newcolor * $backgroundColor[1];
+                        $newblue = $newcolor0 * $foregroundColor[2] + $newcolor * $backgroundColor[2];
                     }
-                    $newcolor = $newcolor / 255;
-                    $newcolor0 = 1 - $newcolor;
-
-                    $newred = $newcolor0 * $foregroundColor[0] + $newcolor * $backgroundColor[0];
-                    $newgreen = $newcolor0 * $foregroundColor[1] + $newcolor * $backgroundColor[1];
-                    $newblue = $newcolor0 * $foregroundColor[2] + $newcolor * $backgroundColor[2];
                 }
 
-                imagesetpixel(
-                    $imgRes,
-                    $x,
-                    $y,
-                    imagecolorallocate(
-                        $imgRes,
-                        (int)$newred,
-                        (int)$newgreen,
-                        (int)$newblue
-                    )
-                );
+                imagesetpixel($imgRes, $x, $y, imagecolorallocate($imgRes, $newred, $newgreen, $newblue));
             }
         }
 
@@ -145,5 +146,13 @@ class WaveDistortionEffect implements EffectInterface
         }
 
         return $img;
+    }
+
+    /**
+     * @return WaveDistortionConfig
+     */
+    public function getWaveDistortionConfig(): WaveDistortionConfig
+    {
+        return $this->waveDistortionConfig;
     }
 }

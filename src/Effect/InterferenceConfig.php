@@ -9,7 +9,7 @@ class InterferenceConfig
      *
      * @var int
      */
-    protected $interferenceMin = 10;
+    protected $interferenceMin = 20;
 
     /**
      * maximum number of char for interference
@@ -23,7 +23,7 @@ class InterferenceConfig
      *
      * @var string
      */
-    protected $interferenceSymbols = '.';
+    protected $interferenceSymbols = '-=~';
 
     /**
      * interference color array [R, G, B]
@@ -43,10 +43,13 @@ class InterferenceConfig
 
     /**
      * @param int $interferenceMin
+     * @return $this
      */
     public function setInterferenceMin($interferenceMin)
     {
         $this->interferenceMin = $interferenceMin;
+        
+        return $this;
     }
 
     /**
@@ -59,10 +62,13 @@ class InterferenceConfig
 
     /**
      * @param int $interferenceMax
+     * @return $this
      */
     public function setInterferenceMax($interferenceMax)
     {
         $this->interferenceMax = $interferenceMax;
+
+        return $this;
     }
 
     /**
@@ -75,10 +81,13 @@ class InterferenceConfig
 
     /**
      * @param string $interferenceSymbols
+     * @return $this
      */
     public function setInterferenceSymbols($interferenceSymbols)
     {
         $this->interferenceSymbols = $interferenceSymbols;
+
+        return $this;
     }
 
     /**
@@ -91,9 +100,12 @@ class InterferenceConfig
 
     /**
      * @param array $interferenceColor
+     * @return $this
      */
     public function setInterferenceColor($interferenceColor)
     {
         $this->interferenceColor = $interferenceColor;
+
+        return $this;
     }
 }

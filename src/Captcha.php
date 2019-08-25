@@ -32,8 +32,6 @@ class Captcha
                 ->setFonts(
                     [
                         new ActionJacksonFont(),
-                        //new MonsterShadowFont(),
-                        //new Baveuse3dFont(),
                     ]
                 );
         }
@@ -139,8 +137,8 @@ class Captcha
             $gaps += $g;
         }
 
-        $paddingTopCorrector = $conf->getPaddingTopCorrector();
-        $padding = $conf->getPadding();
+        // correct paddind 10 px
+        $padding = $conf->getPadding() + 10;
         $x = $padding;
         $charRotate = $conf->getCharRotate();
         $w = $fw * $length + $gaps + $padding * 2;
@@ -162,7 +160,7 @@ class Captcha
                 30,
                 mt_rand(-$charRotate, $charRotate),
                 $x,
-                $y + $fw + $padding + $paddingTopCorrector,
+                $y + $fw + $padding,
                 $color,
                 $font,
                 $char

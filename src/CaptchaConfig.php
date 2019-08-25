@@ -104,14 +104,7 @@ class CaptchaConfig
      *
      * @var int
      */
-    protected $padding = 10;
-
-    /**
-     * correction vertical indent
-     *
-     * @var int
-     */
-    protected $paddingTopCorrector = 0;//8;
+    protected $padding = 0;
 
     /**
      * The angle in degrees for char rotation
@@ -395,25 +388,6 @@ class CaptchaConfig
     public function setPadding($padding)
     {
         $this->padding = $padding;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPaddingTopCorrector()
-    {
-        return $this->paddingTopCorrector;
-    }
-
-    /**
-     * @param int $paddingTopCorrector
-     * @return $this
-     */
-    public function setPaddingTopCorrector($paddingTopCorrector)
-    {
-        $this->paddingTopCorrector = $paddingTopCorrector;
 
         return $this;
     }
