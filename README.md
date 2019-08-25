@@ -1,7 +1,7 @@
 # captcha
 ![Captchas examples](https://formm.ru/captcha/captcha.png)
 
-[Captchas demo](https://formm.ru/captcha)
+[Captcha demo](https://formm.ru/captcha)
 
 Captcha with the most flexible settings.
 Are changing:

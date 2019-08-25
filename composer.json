@@ -1,6 +1,16 @@
 {
   "name": "onnov/captcha",
+  "description": "Captcha generator with the most flexible settings.",
   "type": "library",
+  "keywords": ["captcha", "spam", "abuse"],
+  "homepage": "https://github.com/onnov/captcha",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Sergey Savinkin",
+      "email": "oblnn@yandex.ru"
+    }
+  ],
   "require": {
     "php":">=5.6.0",
     "ext-gd": "*"
