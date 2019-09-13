@@ -27,7 +27,6 @@ script:
   - composer validate --no-check-all
   - composer phpcs
   - composer phpmd
-  - composer phpstan
 
 notifications:
   email: false
