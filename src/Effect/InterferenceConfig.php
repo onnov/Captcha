@@ -43,12 +43,13 @@ class InterferenceConfig
 
     /**
      * @param int $interferenceMin
+     *
      * @return $this
      */
     public function setInterferenceMin($interferenceMin)
     {
         $this->interferenceMin = $interferenceMin;
-        
+
         return $this;
     }
 
@@ -62,6 +63,7 @@ class InterferenceConfig
 
     /**
      * @param int $interferenceMax
+     *
      * @return $this
      */
     public function setInterferenceMax($interferenceMax)
@@ -81,6 +83,7 @@ class InterferenceConfig
 
     /**
      * @param string $interferenceSymbols
+     *
      * @return $this
      */
     public function setInterferenceSymbols($interferenceSymbols)
@@ -100,6 +103,7 @@ class InterferenceConfig
 
     /**
      * @param array $interferenceColor
+     *
      * @return $this
      */
     public function setInterferenceColor($interferenceColor)

@@ -1,0 +1,33 @@
+language: php
+sudo: false
+dist: trusty
+
+cache:
+  directories:
+    - $HOME/.cache/composer/files
+
+php:
+  - '5.5'
+  - '5.6'
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 5.6
+
+before_install:
+  - if [[ $NO_XDEBUG == 1 ]]; then phpenv config-rm xdebug.ini || echo 'No xdebug config.'; fi
+  - test "$TRAVIS_PHP_VERSION" != "nightly" || export COMPOSER_FLAGS="$COMPOSER_FLAGS --ignore-platform-reqs"
+
+before_script:
+  - composer self-update
+  - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer install --prefer-dist $COMPOSER_FLAGS
+
+script:
+  - composer validate --no-check-all
+  - composer phpcs
+  - composer phpmd
+  - composer phpstan
+
+notifications:
+  email: false

@@ -17,7 +17,29 @@
   },
   "autoload": {
     "psr-4" : {
-      "Onnov\\Captcha\\" : "src"
+      "Onnov\\Captcha\\" : "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Onnov\\DetectEncoding\\Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*",
+    "phpbench/phpbench": "*",
+    "phpmd/phpmd": "*",
+    "phpstan/phpstan": "*",
+    "phpstan/phpstan-strict-rules": "*",
+    "squizlabs/php_codesniffer": "*",
+    "infection/infection": "*",
+    "phpcompatibility/php-compatibility": "*",
+    "roave/backward-compatibility-check": "*"
+  },
+  "scripts": {
+    "phpcs": "phpcs",
+    "phpcbf": "phpcbf",
+    "phpmd": "phpmd src text cleancode,codesize,controversial,design,naming,unusedcode",
+    "phpstan": "phpstan analyse src/ -c phpstan.neon --level=7 --no-progress -vvv --memory-limit=-1"
   }
 }

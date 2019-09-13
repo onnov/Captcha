@@ -23,6 +23,7 @@ class WaveDistortionConfig
 
     /**
      * @param int $amplitudeStart
+     *
      * @return $this
      */
     public function setAmplitudeStart($amplitudeStart)
@@ -42,6 +43,7 @@ class WaveDistortionConfig
 
     /**
      * @param int $amplitudeEnd
+     *
      * @return $this
      */
     public function setAmplitudeEnd($amplitudeEnd)
@@ -61,12 +63,13 @@ class WaveDistortionConfig
 
     /**
      * @param int $amplitudeDivider
+     *
      * @return $this
      */
     public function setAmplitudeDivider($amplitudeDivider)
     {
         $this->amplitudeDivider = $amplitudeDivider;
-        
+
         return $this;
     }
 }

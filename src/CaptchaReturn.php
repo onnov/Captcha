@@ -4,22 +4,24 @@ namespace Onnov\Captcha;
 
 /**
  * Class CaptchaReturn
+ *
  * @package Onnov\Captcha
  */
 class CaptchaReturn
 {
     /** @var array */
     protected $headers = [];
-    
+
     /** @var string */
     protected $img;
-    
+
     /** @var string */
     protected $keyString;
 
     /**
      * CaptchaReturn constructor.
-     * @param array $headers
+     *
+     * @param array  $headers
      * @param string $img
      * @param string $keyString
      */

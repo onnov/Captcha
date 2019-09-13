@@ -8,7 +8,8 @@ interface EffectInterface
 {
     /**
      * @param CaptchaConfig $config
-     * @param resource $img
+     * @param resource      $img
+     *
      * @return void
      */
     public function run($config, &$img);

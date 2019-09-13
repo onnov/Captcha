@@ -13,20 +13,24 @@ use Onnov\Captcha\Font\MonsterShadowFont;
 
 /**
  * Class Captcha
+ *
  * @package Onnov\Captcha
  */
 class Captcha
 {
-    /** @var CaptchaConfig|null */
-    protected $config = null;
+    /** @var CaptchaConfig */
+    protected $config;
 
     /** @var string */
     protected $keystring;
 
+    /**
+     * @return void
+     */
     protected function fixConfig()
     {
         $fonts = $this->getConfig()->getFonts();
-        if (is_array($fonts) === false || count($fonts) === 0) {
+        if (count($fonts) === 0) {
             $this
                 ->getConfig()
                 ->setFonts(
@@ -37,7 +41,7 @@ class Captcha
         }
 
         $effects = $this->getConfig()->getEffects();
-        if (is_array($effects) === false) {
+        if (is_array($effects) == false) {
             $this
                 ->getConfig()
                 ->setEffects(
@@ -79,12 +83,12 @@ class Captcha
             imagepng($img);
         }
 
-        $imgOut = trim(ob_get_clean());
+        $imgOut = (string)ob_get_clean();
 
         return new CaptchaReturn(
             [
                 'cache-control' => 'no-store, no-cache, must-revalidate, max-age=0',
-                'content-type' => $imgType,
+                'content-type'  => $imgType,
             ],
             $imgOut,
             $this->keystring
@@ -92,7 +96,7 @@ class Captcha
     }
 
     /**
-     * @return bool|false|resource
+     * @return resource
      */
     private function getImg()
     {
@@ -102,16 +106,24 @@ class Captcha
         $img = $this->getImgF();
         $img = imagescale($img, $width, $height);
 
-        /** @var EffectInterface $effect */
-        foreach ($this->getConfig()->getEffects() as $effect) {
-            $effect->run($this->getConfig(), $img);
+        if ($img == false) {
+            throw new InvalidGdException('imageScale error');
+        }
+
+        $effects = $this->getConfig()->getEffects();
+
+        if (is_array($effects)) {
+            /** @var EffectInterface $effect */
+            foreach ($effects as $effect) {
+                $effect->run($this->getConfig(), $img);
+            }
         }
 
         return $img;
     }
 
     /**
-     * @return false|resource
+     * @return resource
      */
     private function getImgF()
     {
@@ -122,8 +134,8 @@ class Captcha
         $fontObj = $fonts[array_rand($fonts)];
 
         $font = $fontObj->getFontPath();
-        $fw = $fontObj->getCharWidth();
-        $fh = $fontObj->getCharHeight();
+        $qfw = $fontObj->getCharWidth();
+        $qfh = $fontObj->getCharHeight();
 
         $chars = $conf->getAllowedSymbols();
         $len = strlen($chars) - 1;
@@ -132,45 +144,45 @@ class Captcha
         $gap = [];
         $gaps = 0;
         for ($i = 0; $i < ($length - 1); $i++) {
-            $g = mt_rand($conf->getGapMin(), $conf->getGapMax());
-            $gap[] = $g;
-            $gaps += $g;
+            $qrg = mt_rand($conf->getGapMin(), $conf->getGapMax());
+            $gap[] = $qrg;
+            $gaps += $qrg;
         }
 
         // correct paddind 10 px
         $padding = $conf->getPadding() + 10;
-        $x = $padding;
+        $qpx = $padding;
         $charRotate = $conf->getCharRotate();
-        $w = $fw * $length + $gaps + $padding * 2;
-        $h = $fh + $conf->getFluctuationAmplitude() + $padding * 2;
-        $img = $this->imageCreate($w, $h);
-        $bg = imagecolorallocate($img, 255, 255, 255);
-        imagefill($img, 0, 0, $bg);
+        $qwi = $qfw * $length + $gaps + $padding * 2;
+        $qhi = $qfh + $conf->getFluctuationAmplitude() + $padding * 2;
+        $img = $this->imageCreate($qwi, $qhi);
+        $qbg = imagecolorallocate($img, 255, 255, 255);
+        imagefill($img, 0, 0, $qbg);
         $color = imagecolorallocate($img, 0, 0, 0);
 
         for ($i = 0; $i < $length; $i++) {
-            $ck = mt_rand(0, $len);
-            $char = $chars{$ck};
+            $qck = mt_rand(0, $len);
+            $char = $chars{$qck};
             $this->keystring .= $char;
 
-            $y = mt_rand(0, $conf->getFluctuationAmplitude());
+            $qry = mt_rand(0, $conf->getFluctuationAmplitude());
 
             imagettftext(
                 $img,
                 30,
                 mt_rand(-$charRotate, $charRotate),
-                $x,
-                $y + $fw + $padding,
+                $qpx,
+                $qry + $qfw + $padding,
                 $color,
                 $font,
                 $char
             );
 
-            $g = 0;
+            $qrg = 0;
             if (isset($gap[$i])) {
-                $g = $gap[$i];
+                $qrg = $gap[$i];
             }
-            $x += $fw + $g;
+            $qpx += $qfw + $qrg;
         }
 
         return $img;
@@ -180,9 +192,9 @@ class Captcha
      * @param int $width
      * @param int $height
      *
-     * @return false|resource
+     * @return resource
      */
-    private function imageCreate(int $width, int $height)
+    private function imageCreate($width, $height)
     {
         $img = imagecreatetruecolor($width, $height);
         if ($img === false) {
@@ -202,6 +214,7 @@ class Captcha
 
     /**
      * @param CaptchaConfig $config
+     *
      * @return $this
      */
     public function setConfig($config)

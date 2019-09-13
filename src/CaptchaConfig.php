@@ -53,9 +53,9 @@ class CaptchaConfig
     /**
      * List of objects used fonts
      *
-     * @var ModelFont[]|null
+     * @var ModelFont[]
      */
-    protected $fonts = null;
+    protected $fonts;
 
     /**
      * minimum string length
@@ -155,6 +155,7 @@ class CaptchaConfig
 
     /**
      * @param int $width
+     *
      * @return $this
      */
     public function setWidth($width)
@@ -174,6 +175,7 @@ class CaptchaConfig
 
     /**
      * @param int $height
+     *
      * @return $this
      */
     public function setHeight($height)
@@ -193,6 +195,7 @@ class CaptchaConfig
 
     /**
      * @param array $foregroundColor
+     *
      * @return $this
      */
     public function setForegroundColor($foregroundColor)
@@ -212,6 +215,7 @@ class CaptchaConfig
 
     /**
      * @param array $backgroundColor
+     *
      * @return $this
      */
     public function setBackgroundColor($backgroundColor)
@@ -231,6 +235,7 @@ class CaptchaConfig
 
     /**
      * @param string $allowedSymbols
+     *
      * @return $this
      */
     public function setAllowedSymbols($allowedSymbols)
@@ -250,6 +255,7 @@ class CaptchaConfig
 
     /**
      * @param ModelFont[] $fonts
+     *
      * @return $this
      */
     public function setFonts($fonts)
@@ -269,6 +275,7 @@ class CaptchaConfig
 
     /**
      * @param int $lengthMin
+     *
      * @return $this
      */
     public function setLengthMin($lengthMin)
@@ -288,6 +295,7 @@ class CaptchaConfig
 
     /**
      * @param int $lengthMax
+     *
      * @return $this
      */
     public function setLengthMax($lengthMax)
@@ -307,6 +315,7 @@ class CaptchaConfig
 
     /**
      * @param int $gapMin
+     *
      * @return $this
      */
     public function setGapMin($gapMin)
@@ -326,6 +335,7 @@ class CaptchaConfig
 
     /**
      * @param int $gapMax
+     *
      * @return $this
      */
     public function setGapMax($gapMax)
@@ -345,6 +355,7 @@ class CaptchaConfig
 
     /**
      * @param int $fluctuationAmplitude
+     *
      * @return $this
      */
     public function setFluctuationAmplitude($fluctuationAmplitude)
@@ -355,7 +366,7 @@ class CaptchaConfig
     }
 
     /**
-     * @return EffectInterface[]
+     * @return EffectInterface[]|null
      */
     public function getEffects()
     {
@@ -364,6 +375,7 @@ class CaptchaConfig
 
     /**
      * @param EffectInterface[] $effects
+     *
      * @return $this
      */
     public function setEffects($effects)
@@ -383,6 +395,7 @@ class CaptchaConfig
 
     /**
      * @param int $padding
+     *
      * @return $this
      */
     public function setPadding($padding)
@@ -402,6 +415,7 @@ class CaptchaConfig
 
     /**
      * @param int $charRotate
+     *
      * @return $this
      */
     public function setCharRotate($charRotate)
@@ -421,6 +435,7 @@ class CaptchaConfig
 
     /**
      * @param int $jpegQuality
+     *
      * @return $this
      */
     public function setJpegQuality($jpegQuality)
@@ -440,6 +455,7 @@ class CaptchaConfig
 
     /**
      * @param bool $maybeReturnGif
+     *
      * @return $this
      */
     public function setMaybeReturnGif($maybeReturnGif)
@@ -459,6 +475,7 @@ class CaptchaConfig
 
     /**
      * @param bool $maybeReturnJpg
+     *
      * @return $this
      */
     public function setMaybeReturnJpg($maybeReturnJpg)
@@ -478,6 +495,7 @@ class CaptchaConfig
 
     /**
      * @param bool $maybeReturnPng
+     *
      * @return $this
      */
     public function setMaybeReturnPng($maybeReturnPng)
