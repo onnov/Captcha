@@ -29,9 +29,7 @@
     "phpunit/phpunit": "*",
     "phpbench/phpbench": "*",
     "phpmd/phpmd": "*",
-    "squizlabs/php_codesniffer": "*",
-    "phpcompatibility/php-compatibility": "*",
-    "roave/backward-compatibility-check": "*"
+    "squizlabs/php_codesniffer": "*"
   },
   "scripts": {
     "phpcs": "phpcs",
