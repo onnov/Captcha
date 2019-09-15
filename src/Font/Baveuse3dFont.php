@@ -2,8 +2,18 @@
 
 namespace Onnov\Captcha\Font;
 
-class Baveuse3dFont extends ModelFont
+use Onnov\Captcha\Model\FontModel;
+
+/**
+ * Class Baveuse3dFont
+ *
+ * @package Onnov\Captcha\Font
+ */
+class Baveuse3dFont extends FontModel
 {
+    /**
+     * Baveuse3dFont constructor.
+     */
     public function __construct()
     {
         $this

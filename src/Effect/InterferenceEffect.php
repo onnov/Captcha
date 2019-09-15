@@ -20,8 +20,9 @@ class InterferenceEffect implements EffectInterface
 
     public function run($config, &$img)
     {
-        $width = $config->getWidth();
-        $height = $config->getHeight();
+        $size = $config->getImgSize();
+        $width = $size->getWidth();
+        $height = $size->getHeight();
 
         $iConf = $this->getInterferenceConfig();
         $color = $iConf->getInterferenceColor();
@@ -37,7 +38,12 @@ class InterferenceEffect implements EffectInterface
             $qry = rand(0, $height);
             $qrf = rand(0, 5);
 
-            $qic = imagecolorallocate($img, $color[0], $color[1], $color[2]);
+            $qic = imagecolorallocate(
+                $img,
+                $color->getRed(),
+                $color->getGreen(),
+                $color->getBlue()
+            );
             imagechar(
                 $img,
                 $qrf,

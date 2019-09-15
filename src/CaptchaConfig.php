@@ -1,46 +1,38 @@
 <?php
-declare(strict_types=1);
 
 namespace Onnov\Captcha;
 
 use Onnov\Captcha\Effect\EffectInterface;
-use Onnov\Captcha\Effect\InterferenceConfig;
-use Onnov\Captcha\Effect\InterferenceEffect;
-use Onnov\Captcha\Effect\WaveDistortionEffect;
 use Onnov\Captcha\Font\ActionJacksonFont;
-use Onnov\Captcha\Font\Baveuse3dFont;
-use Onnov\Captcha\Font\MonsterShadowFont;
-use Onnov\Captcha\Font\ModelFont;
+use Onnov\Captcha\Model\FontModel;
+use Onnov\Captcha\Model\MaybeReturnImgModel;
+use Onnov\Captcha\Model\MinMaxRangeModel;
+use Onnov\Captcha\Model\RgbColorModel;
+use Onnov\Captcha\Model\SizeModel;
 
 class CaptchaConfig
 {
     /**
-     * image width px
+     * image width x height px
+     * 100-50
      *
-     * @var int
+     * @var SizeModel
      */
-    protected $width = 100;
+    protected $imgSize;
 
     /**
-     * image height px
+     * foreground color rgb(0, 0, 0)
      *
-     * @var int
+     * @var RgbColorModel
      */
-    protected $height = 50;
+    protected $foregroundColor;
 
     /**
-     * foreground color array [R, G, B]
+     * background color rgb[255, 255, 255]
      *
-     * @var array
+     * @var RgbColorModel
      */
-    protected $foregroundColor = [0, 0, 0];
-
-    /**
-     * background color array [R, G, B]
-     *
-     * @var array
-     */
-    protected $backgroundColor = [255, 255, 255];
+    protected $backgroundColor;
 
     /**
      * symbols used to draw CAPTCHA
@@ -53,37 +45,25 @@ class CaptchaConfig
     /**
      * List of objects used fonts
      *
-     * @var ModelFont[]
+     * @var FontModel[]
      */
     protected $fonts;
 
     /**
-     * minimum string length
+     * maximum and minimum length key string
+     * 4-4
      *
-     * @var int
+     * @var MinMaxRangeModel
      */
-    protected $lengthMin = 4;
+    protected $lengthKeyString;
 
     /**
-     * maximum string length
+     * maximum and minimum gap between symbols
+     * 0-10
      *
-     * @var int
+     * @var MinMaxRangeModel
      */
-    protected $lengthMax = 4;
-
-    /**
-     * minimum gap between symbols
-     *
-     * @var int
-     */
-    protected $gapMin = 0;
-
-    /**
-     * maximum gap between symbols
-     *
-     * @var int
-     */
-    protected $gapMax = 10;
+    protected $characterGap;
 
     /**
      * symbol's vertical fluctuation amplitude divided by 2
@@ -120,73 +100,65 @@ class CaptchaConfig
      */
     protected $jpegQuality = 70;
 
-    /**
-     * The script tries to return the image sequentially first in the GIF format then jpg further to the PNG,
-     * $maybeReturnGif = false prevents the return of the image GIF
-     *
-     * @var bool
-     */
-    protected $maybeReturnGif = true;
-
-    /**
-     * The script tries to return the image sequentially first in the GIF format then jpg further to the PNG,
-     * $maybeReturnJpg = false prevents the return of the image JPG
-     *
-     * @var bool
-     */
-    protected $maybeReturnJpg = true;
-
-    /**
-     * The script tries to return the image sequentially first in the GIF format then jpg further to the PNG,
-     * $maybeReturnPng = false prevents the return of the image PNG
-     *
-     * @var bool
-     */
-    protected $maybeReturnPng = true;
+    /** @var MaybeReturnImgModel */
+    protected $maybeReturnImg;
 
 
-    /**
-     * @return int
-     */
-    public function getWidth()
+    public function __construct()
     {
-        return $this->width;
+        $this
+            ->setImgSize(
+                (new SizeModel())
+                    ->setWidth(100)
+                    ->setHeight(50)
+            )
+            ->setForegroundColor(
+                (new RgbColorModel())
+                    ->setRed(0)
+                    ->setGreen(0)
+                    ->setBlue(0)
+            )
+            ->setBackgroundColor(
+                (new RgbColorModel())
+                    ->setRed(255)
+                    ->setGreen(255)
+                    ->setBlue(255)
+            )
+            ->setLengthKeyString(
+                (new MinMaxRangeModel())
+                    ->setMin(4)
+                    ->setMax(4)
+            )
+            ->setCharacterGap(
+                (new MinMaxRangeModel())
+                    ->setMin(0)
+                    ->setMax(10)
+            )
+            ->setMaybeReturnImg(new MaybeReturnImgModel());
     }
 
     /**
-     * @param int $width
+     * @return SizeModel
+     */
+    public function getImgSize()
+    {
+        return $this->imgSize;
+    }
+
+    /**
+     * @param SizeModel $imgSize
      *
      * @return $this
      */
-    public function setWidth($width)
+    public function setImgSize(SizeModel $imgSize)
     {
-        $this->width = $width;
+        $this->imgSize = $imgSize;
 
         return $this;
     }
 
     /**
-     * @return int
-     */
-    public function getHeight()
-    {
-        return $this->height;
-    }
-
-    /**
-     * @param int $height
-     *
-     * @return $this
-     */
-    public function setHeight($height)
-    {
-        $this->height = $height;
-
-        return $this;
-    }
-
-    /**
-     * @return array
+     * @return RgbColorModel
      */
     public function getForegroundColor()
     {
@@ -194,11 +166,11 @@ class CaptchaConfig
     }
 
     /**
-     * @param array $foregroundColor
+     * @param RgbColorModel $foregroundColor
      *
      * @return $this
      */
-    public function setForegroundColor($foregroundColor)
+    public function setForegroundColor(RgbColorModel $foregroundColor)
     {
         $this->foregroundColor = $foregroundColor;
 
@@ -206,7 +178,7 @@ class CaptchaConfig
     }
 
     /**
-     * @return array
+     * @return RgbColorModel
      */
     public function getBackgroundColor()
     {
@@ -214,11 +186,11 @@ class CaptchaConfig
     }
 
     /**
-     * @param array $backgroundColor
+     * @param RgbColorModel $backgroundColor
      *
      * @return $this
      */
-    public function setBackgroundColor($backgroundColor)
+    public function setBackgroundColor(RgbColorModel $backgroundColor)
     {
         $this->backgroundColor = $backgroundColor;
 
@@ -246,15 +218,18 @@ class CaptchaConfig
     }
 
     /**
-     * @return ModelFont[]
+     * @return FontModel[]
      */
     public function getFonts()
     {
+        if ($this->fonts == null) {
+            $this->fonts = [new ActionJacksonFont()];
+        }
         return $this->fonts;
     }
 
     /**
-     * @param ModelFont[] $fonts
+     * @param FontModel[] $fonts
      *
      * @return $this
      */
@@ -266,81 +241,41 @@ class CaptchaConfig
     }
 
     /**
-     * @return int
+     * @return MinMaxRangeModel
      */
-    public function getLengthMin()
+    public function getLengthKeyString()
     {
-        return $this->lengthMin;
+        return $this->lengthKeyString;
     }
 
     /**
-     * @param int $lengthMin
+     * @param MinMaxRangeModel $lengthKeyString
      *
      * @return $this
      */
-    public function setLengthMin($lengthMin)
+    public function setLengthKeyString(MinMaxRangeModel $lengthKeyString)
     {
-        $this->lengthMin = $lengthMin;
+        $this->lengthKeyString = $lengthKeyString;
 
         return $this;
     }
 
     /**
-     * @return int
+     * @return MinMaxRangeModel
      */
-    public function getLengthMax()
+    public function getCharacterGap()
     {
-        return $this->lengthMax;
+        return $this->characterGap;
     }
 
     /**
-     * @param int $lengthMax
+     * @param MinMaxRangeModel $characterGap
      *
      * @return $this
      */
-    public function setLengthMax($lengthMax)
+    public function setCharacterGap(MinMaxRangeModel $characterGap)
     {
-        $this->lengthMax = $lengthMax;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getGapMin()
-    {
-        return $this->gapMin;
-    }
-
-    /**
-     * @param int $gapMin
-     *
-     * @return $this
-     */
-    public function setGapMin($gapMin)
-    {
-        $this->gapMin = $gapMin;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getGapMax()
-    {
-        return $this->gapMax;
-    }
-
-    /**
-     * @param int $gapMax
-     *
-     * @return $this
-     */
-    public function setGapMax($gapMax)
-    {
-        $this->gapMax = $gapMax;
+        $this->characterGap = $characterGap;
 
         return $this;
     }
@@ -446,61 +381,21 @@ class CaptchaConfig
     }
 
     /**
-     * @return bool
+     * @return MaybeReturnImgModel
      */
-    public function isMaybeReturnGif()
+    public function getMaybeReturnImg()
     {
-        return $this->maybeReturnGif;
+        return $this->maybeReturnImg;
     }
 
     /**
-     * @param bool $maybeReturnGif
+     * @param MaybeReturnImgModel $maybeReturnImg
      *
      * @return $this
      */
-    public function setMaybeReturnGif($maybeReturnGif)
+    public function setMaybeReturnImg(MaybeReturnImgModel $maybeReturnImg)
     {
-        $this->maybeReturnGif = $maybeReturnGif;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isMaybeReturnJpg()
-    {
-        return $this->maybeReturnJpg;
-    }
-
-    /**
-     * @param bool $maybeReturnJpg
-     *
-     * @return $this
-     */
-    public function setMaybeReturnJpg($maybeReturnJpg)
-    {
-        $this->maybeReturnJpg = $maybeReturnJpg;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isMaybeReturnPng()
-    {
-        return $this->maybeReturnPng;
-    }
-
-    /**
-     * @param bool $maybeReturnPng
-     *
-     * @return $this
-     */
-    public function setMaybeReturnPng($maybeReturnPng)
-    {
-        $this->maybeReturnPng = $maybeReturnPng;
+        $this->maybeReturnImg = $maybeReturnImg;
 
         return $this;
     }

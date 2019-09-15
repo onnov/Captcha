@@ -2,6 +2,8 @@
 
 namespace Onnov\Captcha\Effect;
 
+use Onnov\Captcha\Model\RgbColorModel;
+
 class InterferenceConfig
 {
     /**
@@ -26,12 +28,20 @@ class InterferenceConfig
     protected $interferenceSymbols = '-=~';
 
     /**
-     * interference color array [R, G, B]
+     * interference color rgb[0, 0, 0]
      * Only valid if the effect is applied last!
      *
-     * @var array
+     * @var RgbColorModel
      */
-    protected $interferenceColor = [0, 0, 0];
+    protected $interferenceColor;
+
+    public function __construct()
+    {
+        $this->interferenceColor = (new RgbColorModel())
+            ->setRed(0)
+            ->setGreen(0)
+            ->setBlue(0);
+    }
 
     /**
      * @return int
@@ -94,7 +104,7 @@ class InterferenceConfig
     }
 
     /**
-     * @return array
+     * @return RgbColorModel
      */
     public function getInterferenceColor()
     {
@@ -102,11 +112,11 @@ class InterferenceConfig
     }
 
     /**
-     * @param array $interferenceColor
+     * @param RgbColorModel $interferenceColor
      *
      * @return $this
      */
-    public function setInterferenceColor($interferenceColor)
+    public function setInterferenceColor(RgbColorModel $interferenceColor)
     {
         $this->interferenceColor = $interferenceColor;
 

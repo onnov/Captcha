@@ -5,11 +5,7 @@ namespace Onnov\Captcha;
 use Onnov\Captcha\Effect\EffectInterface;
 use Onnov\Captcha\Effect\InterferenceEffect;
 use Onnov\Captcha\Effect\WaveDistortionEffect;
-use Onnov\Captcha\Exception\InvalidGdException;
-use Onnov\Captcha\Font\ActionJacksonFont;
-use Onnov\Captcha\Font\Baveuse3dFont;
-use Onnov\Captcha\Font\ModelFont;
-use Onnov\Captcha\Font\MonsterShadowFont;
+use Onnov\Captcha\Model\FontModel;
 
 /**
  * Class Captcha
@@ -22,26 +18,15 @@ class Captcha
     protected $config;
 
     /** @var string */
-    protected $keystring;
+    protected $keyString;
 
     /**
      * @return void
      */
     protected function fixConfig()
     {
-        $fonts = $this->getConfig()->getFonts();
-        if (count($fonts) === 0) {
-            $this
-                ->getConfig()
-                ->setFonts(
-                    [
-                        new ActionJacksonFont(),
-                    ]
-                );
-        }
-
         $effects = $this->getConfig()->getEffects();
-        if (is_array($effects) == false) {
+        if ($effects == null) {
             $this
                 ->getConfig()
                 ->setEffects(
@@ -60,9 +45,6 @@ class Captcha
      */
     public function getCaptcha()
     {
-        if ($this->getConfig() == null) {
-            $this->setConfig(new CaptchaConfig());
-        }
         $this->fixConfig();
         $conf = $this->getConfig();
 
@@ -72,13 +54,15 @@ class Captcha
 
         ob_start();
 
-        if (function_exists("imagegif") && $conf->isMaybeReturnGif()) {
+        $rImg = $conf->getMaybeReturnImg();
+
+        if (function_exists("imagegif") && $rImg->isMaybeReturnGif()) {
             $imgType = 'image/gif';
             imagegif($img);
-        } elseif (function_exists("imagejpeg") && $conf->isMaybeReturnJpg()) {
+        } elseif (function_exists("imagejpeg") && $rImg->isMaybeReturnJpg()) {
             $imgType = "image/jpeg";
             imagejpeg($img, null, $conf->getJpegQuality());
-        } elseif (function_exists("imagepng") && $conf->isMaybeReturnPng()) {
+        } elseif (function_exists("imagepng") && $rImg->isMaybeReturnPng()) {
             $imgType = "image/x-png";
             imagepng($img);
         }
@@ -91,7 +75,7 @@ class Captcha
                 'content-type'  => $imgType,
             ],
             $imgOut,
-            $this->keystring
+            $this->keyString
         );
     }
 
@@ -100,22 +84,20 @@ class Captcha
      */
     private function getImg()
     {
-        $width = $this->getConfig()->getWidth();
-        $height = $this->getConfig()->getHeight();
+        $conf = $this->getConfig();
+        $size = $conf->getImgSize();
+        $width = $size->getWidth();
+        $height = $size->getHeight();
 
         $img = $this->getImgF();
         $img = imagescale($img, $width, $height);
 
-        if ($img == false) {
-            throw new InvalidGdException('imageScale error');
-        }
-
-        $effects = $this->getConfig()->getEffects();
+        $effects = $conf->getEffects();
 
         if (is_array($effects)) {
             /** @var EffectInterface $effect */
             foreach ($effects as $effect) {
-                $effect->run($this->getConfig(), $img);
+                $effect->run($conf, $img);
             }
         }
 
@@ -130,7 +112,7 @@ class Captcha
         $conf = $this->getConfig();
         $fonts = $conf->getFonts();
 
-        /** @var ModelFont $fontObj */
+        /** @var FontModel $fontObj */
         $fontObj = $fonts[array_rand($fonts)];
 
         $font = $fontObj->getFontPath();
@@ -139,12 +121,14 @@ class Captcha
 
         $chars = $conf->getAllowedSymbols();
         $len = strlen($chars) - 1;
-        $length = mt_rand($conf->getLengthMin(), $conf->getLengthMax());
+        $lenKS = $conf->getLengthKeyString();
+        $length = mt_rand($lenKS->getMin(), $lenKS->getMax());
 
         $gap = [];
         $gaps = 0;
         for ($i = 0; $i < ($length - 1); $i++) {
-            $qrg = mt_rand($conf->getGapMin(), $conf->getGapMax());
+            $charG = $conf->getCharacterGap();
+            $qrg = mt_rand($charG->getMin(), $charG->getMax());
             $gap[] = $qrg;
             $gaps += $qrg;
         }
@@ -163,7 +147,7 @@ class Captcha
         for ($i = 0; $i < $length; $i++) {
             $qck = mt_rand(0, $len);
             $char = $chars{$qck};
-            $this->keystring .= $char;
+            $this->keyString .= $char;
 
             $qry = mt_rand(0, $conf->getFluctuationAmplitude());
 
@@ -197,9 +181,6 @@ class Captcha
     private function imageCreate($width, $height)
     {
         $img = imagecreatetruecolor($width, $height);
-        if ($img === false) {
-            throw new InvalidGdException('Cannot Initialize new GD image stream');
-        }
 
         return $img;
     }
@@ -209,6 +190,9 @@ class Captcha
      */
     private function getConfig()
     {
+        if ($this->config == null) {
+            $this->setConfig(new CaptchaConfig());
+        }
         return $this->config;
     }
 

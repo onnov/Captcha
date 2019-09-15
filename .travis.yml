@@ -17,6 +17,11 @@ script:
   - composer validate --no-check-all
   - composer phpcs
   - composer phpmd
+  - composer coverage
+
+after_script:
+  wget https://scrutinizer-ci.com/ocular.phar
+  php ocular.phar code-coverage:upload --format=php-clover coverage.clover
 
 notifications:
   email: false

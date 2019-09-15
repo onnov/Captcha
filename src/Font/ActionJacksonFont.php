@@ -2,8 +2,18 @@
 
 namespace Onnov\Captcha\Font;
 
-class ActionJacksonFont extends ModelFont
+use Onnov\Captcha\Model\FontModel;
+
+/**
+ * Class ActionJacksonFont
+ *
+ * @package Onnov\Captcha\Font
+ */
+class ActionJacksonFont extends FontModel
 {
+    /**
+     * ActionJacksonFont constructor.
+     */
     public function __construct()
     {
         $this

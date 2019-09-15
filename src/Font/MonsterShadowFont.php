@@ -2,8 +2,18 @@
 
 namespace Onnov\Captcha\Font;
 
-class MonsterShadowFont extends ModelFont
+use Onnov\Captcha\Model\FontModel;
+
+/**
+ * Class MonsterShadowFont
+ *
+ * @package Onnov\Captcha\Font
+ */
+class MonsterShadowFont extends FontModel
 {
+    /**
+     * MonsterShadowFont constructor.
+     */
     public function __construct()
     {
         $this

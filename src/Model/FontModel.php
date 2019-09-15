@@ -1,12 +1,13 @@
 <?php
 
-namespace Onnov\Captcha\Font;
+namespace Onnov\Captcha\Model;
 
 /**
- * Class ModelFont
- * @package Onnov\Captcha\Font
+ * Class FontModel
+ *
+ * @package Onnov\Captcha\Model
  */
-class ModelFont
+class FontModel
 {
     /** @var string */
     protected $fontPath;
@@ -27,6 +28,7 @@ class ModelFont
 
     /**
      * @param string $fontPath
+     *
      * @return $this
      */
     public function setFontPath($fontPath)
@@ -46,12 +48,13 @@ class ModelFont
 
     /**
      * @param int $charWidth
+     *
      * @return $this
      */
     public function setCharWidth($charWidth)
     {
         $this->charWidth = $charWidth;
-        
+
         return $this;
     }
 
@@ -65,6 +68,7 @@ class ModelFont
 
     /**
      * @param int $charHeight
+     *
      * @return $this
      */
     public function setCharHeight($charHeight)

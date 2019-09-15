@@ -34,6 +34,8 @@
   "scripts": {
     "phpcs": "phpcs",
     "phpcbf": "phpcbf",
-    "phpmd": "phpmd src text cleancode,codesize,controversial,design,naming,unusedcode --ignore-violations-on-exit"
+    "phpmd": "phpmd src text cleancode,codesize,controversial,design,naming,unusedcode --ignore-violations-on-exit",
+    "phpunit": "phpunit",
+    "coverage": "phpunit --coverage-text --coverage-clover ./build/coverage/clover.xml"
   }
 }

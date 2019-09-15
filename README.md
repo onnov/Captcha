@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/onnov/captcha.svg?branch=master)](https://travis-ci.org/onnov/captcha)
+[![Latest Stable Version](https://poser.pugx.org/onnov/captcha/v/stable)](https://packagist.org/packages/onnov/captcha)
+[![License](https://poser.pugx.org/onnov/captcha/license)](https://packagist.org/packages/onnov/captcha)
 
 # captcha
 ![Captchas examples](https://formm.ru/captcha/captcha.png)
@@ -70,7 +72,7 @@ $captcha = new Captcha();
  *
  * @var CaptchaReturn $result
  */
-$result = $captcha->getCaptcha()
+$result = $captcha->getCaptcha();
 
 // Save the value of the captcha in the session
 $_SESSION['CaptchaKeyString'] = $result->getKeyString();
@@ -92,9 +94,9 @@ The default font is ActionJackson. You can use monsterShadow or baveuse3d fonts 
 use Onnov\Captcha\Font\MonsterShadowFont;
 use Onnov\Captcha\CaptchaConfig;
 
-$capchaConfig = (new CaptchaConfig())->setFonts([new MonsterShadowFont()]);
+$captchaConfig = (new CaptchaConfig())->setFonts([new MonsterShadowFont()]);
 $result = $captcha
-            ->setConfig($capchaConfig)
+            ->setConfig($captchaConfig)
             ->getCaptcha();
 ```
 
@@ -105,7 +107,7 @@ use Onnov\Captcha\Font\MonsterShadowFont;
 use Onnov\Captcha\Font\Baveuse3dFont;
 use Onnov\Captcha\CaptchaConfig;
 
-$capchaConfig = (new CaptchaConfig())
+$captchaConfig = (new CaptchaConfig())
             ->setFonts(
                 [
                     new ActionJacksonFont(),
@@ -114,7 +116,7 @@ $capchaConfig = (new CaptchaConfig())
                 ]
             );
 $result = $captcha
-            ->setConfig($capchaConfig)
+            ->setConfig($captchaConfig)
             ->getCaptcha();
 ```
 You can use any TTF font, specifying the path and the proportions to it in the form of two width and height parameters (you will have to select the parameters experimentally)
@@ -126,9 +128,9 @@ $font = (new ModelFont())
             ->setFontPath(__DIR__.'/SignboardCpsNr.ttf')
             ->setCharWidth(25)
             ->setCharHeight(30);
-$capchaConfig = (new CaptchaConfig())->setFonts([$font]);
+$captchaConfig = (new CaptchaConfig())->setFonts([$font]);
 $result = $captcha
-            ->setConfig($capchaConfig)
+            ->setConfig($captchaConfig)
             ->getCaptcha();
 ```
 
@@ -143,9 +145,9 @@ You can turn off both effects.
 ```php
 use Onnov\Captcha\CaptchaConfig;
 
-$capchaConfig = (new CaptchaConfig())->setEffects([]);
+$captchaConfig = (new CaptchaConfig())->setEffects([]);
 $result = $captcha
-            ->setConfig($capchaConfig)
+            ->setConfig($captchaConfig)
             ->getCaptcha();
 ```
 You can use only one effect.
@@ -153,9 +155,9 @@ You can use only one effect.
 use Onnov\Captcha\CaptchaConfig;
 use Onnov\Captcha\Effect\WaveDistortionEffect;
 
-$capchaConfig = (new CaptchaConfig())->setEffects([new WaveDistortionEffect()]);
+$captchaConfig = (new CaptchaConfig())->setEffects([new WaveDistortionEffect()]);
 $result = $captcha
-            ->setConfig($capchaConfig)
+            ->setConfig($captchaConfig)
             ->getCaptcha();
 ```
 You can change the sequence of application (by default, first Interference then WaveDistortion)
@@ -164,7 +166,7 @@ use Onnov\Captcha\CaptchaConfig;
 use Onnov\Captcha\Effect\WaveDistortionEffect;
 use Onnov\Captcha\Effect\InterferenceEffect;
 
-$capchaConfig = (new CaptchaConfig())
+$captchaConfig = (new CaptchaConfig())
             ->setEffects(
                 [
                     new WaveDistortionEffect(),
@@ -172,7 +174,7 @@ $capchaConfig = (new CaptchaConfig())
                 ]
             );
 $result = $captcha
-            ->setConfig($capchaConfig)
+            ->setConfig($captchaConfig)
             ->getCaptcha();
 ```
 Each effect can be configured.
@@ -193,7 +195,7 @@ $interferenceConfig = (new InterferenceConfig())
             ->setInterferenceMax(35)
             ->setInterferenceSymbols(':#~');
         
-$capchaConfig = (new CaptchaConfig())
+$captchaConfig = (new CaptchaConfig())
             ->setEffects(
                 [
                     new WaveDistortionEffect($waveDistortionConfig),
@@ -202,7 +204,7 @@ $capchaConfig = (new CaptchaConfig())
             );
 
 $result = $captcha
-            ->setConfig($capchaConfig)
+            ->setConfig($captchaConfig)
             ->getCaptcha();
 ```
 
@@ -233,7 +235,7 @@ configuration example
 ```php
 use Onnov\Captcha\CaptchaConfig;
 
-$capchaConfig = (new CaptchaConfig())
+$captchaConfig = (new CaptchaConfig())
             ->setWidth(120)
             ->setHeight(70)
             ->setPadding(5)
@@ -241,7 +243,7 @@ $capchaConfig = (new CaptchaConfig())
             ->setForegroundColor([0,100,100]);
 
 $result = $captcha
-            ->setConfig($capchaConfig)
+            ->setConfig($captchaConfig)
             ->getCaptcha();
 ```
 
