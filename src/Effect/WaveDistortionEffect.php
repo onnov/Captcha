@@ -113,6 +113,9 @@ class WaveDistortionEffect implements EffectInterface
         );
 
         $rnd = $this->getRand();
+        $newred = $fgColor->getRed();
+        $newgreen = $fgColor->getGreen();
+        $newblue = $fgColor->getBlue();
 
         for ($x = 0; $x < $width; $x++) {
             for ($y = 0; $y < $height; $y++) {
