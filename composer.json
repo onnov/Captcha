@@ -22,7 +22,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Onnov\\DetectEncoding\\Tests\\": "tests/"
+      "Onnov\\Captcha\\Tests\\": "tests/"
     }
   },
   "require-dev": {
