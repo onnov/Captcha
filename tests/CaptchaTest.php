@@ -41,9 +41,9 @@ class CaptchaTest extends TestCase
     {
         $this->assertInstanceOf(CaptchaReturn::class, $result);
 
-        $this->assertIsArray($result->getHeaders());
-        $this->assertIsString($result->getImg());
-        $this->assertIsString($result->getKeyString());
+        $this->assertEquals('array', gettype($result->getHeaders())); // assertIsArray
+        $this->assertEquals('string', gettype($result->getImg())); // assertIsString
+        $this->assertEquals('string', gettype($result->getKeyString())); // assertIsString
     }
 
     public function testDefaultCaptcha()
