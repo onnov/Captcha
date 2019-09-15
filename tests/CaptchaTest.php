@@ -7,7 +7,7 @@
  * Time: 11:30
  */
 
-namespace Onnov\DetectEncoding\Tests;
+namespace Onnov\Captcha\Tests;
 
 use Onnov\Captcha\Captcha;
 use Onnov\Captcha\CaptchaConfig;
