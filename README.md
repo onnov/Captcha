@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/onnov/captcha.svg?branch=master)](https://travis-ci.org/onnov/captcha)
+
 # captcha
 ![Captchas examples](https://formm.ru/captcha/captcha.png)
 
@@ -16,7 +18,7 @@ Are changing:
 Use Composer to install this library from Packagist: onnov/captcha
 
 Run the following command from your project directory to add the dependency:
-```
+```bach
 composer require onnov/captcha
 ```
 Alternatively, add the dependency directly to your composer.json file:
@@ -34,16 +36,16 @@ The classes in the project are structured according to the PSR-4 standard, so yo
 If you use SYMFONY framework:
 
 in services.yaml file
-```
+```yaml
 services:
     Onnov\Captcha\Captcha:
         autowire: true
 ```
 in the controller or service
-```
+``` php
 use Onnov\Captcha\Captcha;
 ```
-```
+```php
     /** @var Captcha */
     protected $captcha;
 
@@ -54,9 +56,7 @@ use Onnov\Captcha\Captcha;
 
 ### Without framework
 
-```
-<?php
-
+```php
 use Onnov\Captcha\Captcha;
 
 $captcha = new Captcha();
@@ -64,9 +64,7 @@ $captcha = new Captcha();
 
 #### Get captcha with default settings:
 
-```
-<?php
-
+```php
 /**
  * Returns CaptchaReturn Object
  *
@@ -90,7 +88,7 @@ echo $result->getImg();
 
 The default font is ActionJackson. You can use monsterShadow or baveuse3d fonts already inside.
 
-```
+```php
 use Onnov\Captcha\Font\MonsterShadowFont;
 use Onnov\Captcha\CaptchaConfig;
 
@@ -101,7 +99,7 @@ $result = $captcha
 ```
 
 You can use several fonts at the same time, they will be used in random order.
-```
+```php
 use Onnov\Captcha\Font\ActionJacksonFont;
 use Onnov\Captcha\Font\MonsterShadowFont;
 use Onnov\Captcha\Font\Baveuse3dFont;
@@ -120,7 +118,7 @@ $result = $captcha
             ->getCaptcha();
 ```
 You can use any TTF font, specifying the path and the proportions to it in the form of two width and height parameters (you will have to select the parameters experimentally)
-```
+```php
 use Onnov\Captcha\Font\ModelFont;
 use Onnov\Captcha\CaptchaConfig;
 
@@ -142,7 +140,7 @@ By default, two effects are used to distort the image in captcha:
 
 
 You can turn off both effects.
-```
+```php
 use Onnov\Captcha\CaptchaConfig;
 
 $capchaConfig = (new CaptchaConfig())->setEffects([]);
@@ -151,7 +149,7 @@ $result = $captcha
             ->getCaptcha();
 ```
 You can use only one effect.
-```
+```php
 use Onnov\Captcha\CaptchaConfig;
 use Onnov\Captcha\Effect\WaveDistortionEffect;
 
@@ -161,7 +159,7 @@ $result = $captcha
             ->getCaptcha();
 ```
 You can change the sequence of application (by default, first Interference then WaveDistortion)
-```
+```php
 use Onnov\Captcha\CaptchaConfig;
 use Onnov\Captcha\Effect\WaveDistortionEffect;
 use Onnov\Captcha\Effect\InterferenceEffect;
@@ -178,7 +176,7 @@ $result = $captcha
             ->getCaptcha();
 ```
 Each effect can be configured.
-```
+```php
 use Onnov\Captcha\CaptchaConfig;
 use Onnov\Captcha\Effect\InterferenceConfig;
 use Onnov\Captcha\Effect\InterferenceEffect;
@@ -232,7 +230,7 @@ $result = $captcha
 
 configuration example
 
-```
+```php
 use Onnov\Captcha\CaptchaConfig;
 
 $capchaConfig = (new CaptchaConfig())
