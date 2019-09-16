@@ -36,6 +36,7 @@
     "phpcbf": "phpcbf",
     "phpmd": "phpmd src text cleancode,codesize,controversial,design,naming,unusedcode --ignore-violations-on-exit",
     "phpunit": "phpunit",
-    "coverage": "phpunit --coverage-text --coverage-clover coverage.clover"
+    "coveragehtml": "phpunit --coverage-text --coverage-html ./build/coverage/html --coverage-clover ./build/coverage/clover.xml",
+    "coverage": "phpunit --coverage-text --coverage-clover clover.xml"
   }
 }

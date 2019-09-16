@@ -113,9 +113,9 @@ class WaveDistortionEffect implements EffectInterface
         );
 
         $rnd = $this->getRand();
-        $newred = $fgColor->getRed();
-        $newgreen = $fgColor->getGreen();
-        $newblue = $fgColor->getBlue();
+        $newRed = $fgColor->getRed();
+        $newGreen = $fgColor->getGreen();
+        $newBlue = $fgColor->getBlue();
 
         for ($x = 0; $x < $width; $x++) {
             for ($y = 0; $y < $height; $y++) {
@@ -139,9 +139,9 @@ class WaveDistortionEffect implements EffectInterface
                 if ($color == 0 && $colorX == 0 && $colorY == 0
                     && $colorXY == 0
                 ) {
-                    $newred = $fgColor->getRed();
-                    $newgreen = $fgColor->getGreen();
-                    $newblue = $fgColor->getBlue();
+                    $newRed = $fgColor->getRed();
+                    $newGreen = $fgColor->getGreen();
+                    $newBlue = $fgColor->getBlue();
                 } elseif ($color < 255 && $colorX < 255 && $colorY < 255
                     && $colorXY < 255
                 ) {
@@ -162,20 +162,19 @@ class WaveDistortionEffect implements EffectInterface
                     $newcolor = $newcolor / 255;
                     $newcolor0 = 1 - $newcolor;
 
-                    $newred = $newcolor0 * $bgColor->getRed() + $newcolor
-                        * $bgColor->getRed();
-                    $newgreen = $newcolor0 * $bgColor->getGreen()
-                        + $newcolor
-                        * $bgColor->getGreen();
-                    $newblue = $newcolor0 * $bgColor->getBlue() + $newcolor
-                        * $bgColor->getBlue();
+                    $newRed = ceil($newcolor0 * $bgColor->getRed()
+                        + $newcolor * $bgColor->getRed());
+                    $newGreen = ceil($newcolor0 * $bgColor->getGreen()
+                        + $newcolor * $bgColor->getGreen());
+                    $newBlue = ceil($newcolor0 * $bgColor->getBlue()
+                        + $newcolor * $bgColor->getBlue());
                 }
 
                 imagesetpixel(
                     $imgRes,
                     $x,
                     $y,
-                    imagecolorallocate($imgRes, $newred, $newgreen, $newblue)
+                    imagecolorallocate($imgRes, $newRed, $newGreen, $newBlue)
                 );
             }
         }
