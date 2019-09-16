@@ -162,11 +162,11 @@ class WaveDistortionEffect implements EffectInterface
                     $newcolor = $newcolor / 255;
                     $newcolor0 = 1 - $newcolor;
 
-                    $newRed = ceil($newcolor0 * $bgColor->getRed()
+                    $newRed = (int)ceil($newcolor0 * $bgColor->getRed()
                         + $newcolor * $bgColor->getRed());
-                    $newGreen = ceil($newcolor0 * $bgColor->getGreen()
+                    $newGreen = (int)ceil($newcolor0 * $bgColor->getGreen()
                         + $newcolor * $bgColor->getGreen());
-                    $newBlue = ceil($newcolor0 * $bgColor->getBlue()
+                    $newBlue = (int)ceil($newcolor0 * $bgColor->getBlue()
                         + $newcolor * $bgColor->getBlue());
                 }
 
